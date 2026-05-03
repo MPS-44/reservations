@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Réserver — Machine à glace KitchenCook Deliciosa | Mes p'tits Services 44</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --primary:#185FA5;--primary-light:#E6F1FB;--primary-dark:#0C447C;
+  --accent:#CE7282;--accent-light:#FAEAEA;
+  --warm:#F1EFE8;--warm-dark:#D3D1C7;
+  --green:#3B6D11;--green-light:#EAF3DE;
+  --text:#2C2C2A;--text-muted:#888780;
+  --border:#e0ddd6;--white:#fff;
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--warm);color:var(--text);min-height:100vh;padding:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes checkIn{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0deg);}}
+.fade-up{animation:fadeUp 0.4s ease both;}
+.fade-up-1{animation-delay:0.05s;}.fade-up-2{animation-delay:0.1s;}.fade-up-3{animation-delay:0.15s;}.fade-up-4{animation-delay:0.2s;}.fade-up-5{animation-delay:0.25s;}
+.page{max-width:580px;margin:0 auto;padding:28px 16px 60px;}
+.hero{background:var(--primary);border-radius:var(--radius);padding:28px 24px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.hero::after{content:'';position:absolute;bottom:-30px;left:20px;width:100px;height:100px;background:rgba(255,255,255,0.04);border-radius:50%;}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:#fff;line-height:1.25;margin-bottom:10px;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:16px;}
+.hero-badges{display:flex;gap:6px;flex-wrap:wrap;}
+.hero-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.15);color:#fff;}
+.hero-badge.green{background:rgba(59,109,17,0.3);}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.trust-item{background:var(--white);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;border:0.5px solid var(--border);}
+.trust-icon{font-size:18px;display:block;margin-bottom:4px;}
+.trust-text{font-size:11px;color:var(--text-muted);line-height:1.4;}
+.card{background:var(--white);border-radius:var(--radius);border:0.5px solid var(--border);padding:20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(24,95,165,0.06);}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card-title-num{width:22px;height:22px;background:var(--primary-light);color:var(--primary-dark);border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* Formule selector */
+.formule-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.formule-opt{position:relative;}
+.formule-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.formule-opt label{display:block;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);}
+.formule-opt label:hover{border-color:var(--primary);transform:translateY(-1px);}
+.formule-opt input:checked + label{border-color:var(--primary);border-width:2px;background:var(--primary-light);transform:translateY(-2px);box-shadow:0 4px 12px rgba(24,95,165,0.15);}
+.formule-name{font-size:13px;font-weight:700;display:block;margin-bottom:4px;color:var(--text);}
+.formule-desc{font-size:10px;color:var(--text-muted);line-height:1.4;display:block;}
+.formule-opt input:checked + label .formule-name{color:var(--primary-dark);}
+.formule-opt input:checked + label .formule-desc{color:var(--primary);}
+
+/* Tarifs dynamiques */
+.tarif-section{display:none;}
+.tarif-section.active{display:block;}
+.tarif-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
+.tarif-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.tarif-opt{position:relative;}
+.tarif-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.tarif-opt label{display:block;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);position:relative;overflow:hidden;}
+.tarif-opt label:hover{border-color:var(--primary);transform:translateY(-1px);}
+.tarif-opt input:checked + label{border-color:var(--primary);border-width:2px;background:var(--primary-light);transform:translateY(-2px);box-shadow:0 4px 12px rgba(24,95,165,0.15);}
+.tarif-opt input:checked + label::after{content:'✓';position:absolute;top:4px;right:6px;font-size:10px;color:var(--primary);font-weight:700;animation:checkIn 0.2s ease;}
+.tarif-dur{font-size:11px;color:var(--text-muted);display:block;margin-bottom:3px;}
+.tarif-price{font-size:17px;font-weight:700;color:var(--text);}
+.tarif-opt input:checked + label .tarif-price{color:var(--primary-dark);}
+.tarif-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;background:var(--accent-light);color:var(--accent);margin-top:4px;text-transform:uppercase;}
+
+.liv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.liv-opt{position:relative;}
+.liv-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.liv-opt label{display:block;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;transition:all 0.2s;background:var(--white);}
+.liv-opt label:hover{border-color:var(--primary);}
+.liv-opt input:checked + label{border-color:var(--primary);border-width:2px;background:var(--primary-light);box-shadow:0 4px 12px rgba(24,95,165,0.12);}
+.liv-name{font-size:13px;font-weight:600;display:block;color:var(--text);}
+.liv-sub{font-size:11px;color:var(--text-muted);display:block;margin-top:2px;line-height:1.4;}
+.liv-opt input:checked + label .liv-name{color:var(--primary-dark);}
+.liv-opt input:checked + label .liv-sub{color:var(--primary);}
+.infobox{background:var(--accent-light);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 12px;font-size:12px;color:#7a3545;line-height:1.6;margin-bottom:14px;}
+.dates-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em;}
+.field input,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.field input:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(24,95,165,0.1);}
+.field textarea{min-height:80px;resize:vertical;}
+.fields-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.summary{background:var(--primary-light);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:14px;display:none;align-items:center;justify-content:space-between;border:0.5px solid rgba(24,95,165,0.2);}
+.summary.visible{display:flex;}
+.summary-label{font-size:13px;color:var(--primary-dark);font-weight:600;}
+.summary-price{font-size:20px;font-weight:700;color:var(--primary-dark);}
+.summary-price span{font-size:12px;font-weight:400;color:var(--primary);}
+.cross{background:linear-gradient(135deg,var(--warm) 0%,#ebe9e0 100%);border-radius:var(--radius-sm);padding:14px;border:0.5px solid var(--warm-dark);}
+.cross-title{font-size:13px;font-weight:700;margin-bottom:3px;color:var(--text);}
+.cross-sub{font-size:12px;color:var(--text-muted);margin-bottom:10px;}
+.cross-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.cross-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);padding:7px 10px;background:var(--white);border-radius:6px;border:0.5px solid var(--border);cursor:pointer;transition:all 0.15s;}
+.cross-item:hover{border-color:var(--primary);color:var(--primary);}
+.cross-item input{width:14px;height:14px;accent-color:var(--primary);flex-shrink:0;}
+.cross-item:has(input:checked){background:var(--green-light);border-color:var(--green);color:var(--green);}
+.cta{display:block;width:100%;padding:15px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:all 0.2s;letter-spacing:0.02em;position:relative;overflow:hidden;}
+.cta::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);transform:translateX(-100%);transition:transform 0.4s;}
+.cta:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(24,95,165,0.3);}
+.cta:hover::after{transform:translateX(100%);}
+.cta:disabled{background:var(--warm-dark);cursor:not-allowed;transform:none;box-shadow:none;}
+.cta-wa{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;margin-top:8px;background:#25D366;color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.cta-wa:hover{background:#1da851;transform:translateY(-1px);}
+.note{font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;line-height:1.6;}
+.note strong{color:var(--text);}
+.confirm{display:none;text-align:center;padding:40px 20px;}
+.confirm.visible{display:block;animation:fadeUp 0.5s ease;}
+.confirm-check{width:64px;height:64px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;animation:checkIn 0.4s 0.1s both;}
+.confirm h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;margin-bottom:10px;}
+.confirm p{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;}
+.confirm-recap{background:var(--primary-light);border-radius:var(--radius-sm);padding:14px 16px;text-align:left;margin-bottom:20px;}
+.confirm-recap p{font-size:13px;color:var(--primary-dark);line-height:1.9;}
+@media(max-width:480px){
+  .formule-grid{grid-template-columns:1fr;}
+  .tarif-grid,.tarif-grid-4{grid-template-columns:1fr 1fr;}
+  .fields-2,.dates-grid{grid-template-columns:1fr;}
+  .cross-grid{grid-template-columns:1fr;}
+  .trust{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero fade-up">
+    <p class="hero-label">Location festive</p>
+    <h1>Machine à glace<br/>KitchenCook Deliciosa</h1>
+    <p class="hero-sub">Réalisez chez vous de délicieuses glaces à l'italienne et granités. Ludique et facile — idéale pour les petits plaisirs comme les grandes occasions.</p>
+    <div class="hero-badges">
+      <span class="hero-badge green">✓ Sans paiement en ligne</span>
+      <span class="hero-badge">✓ Confirmation sous 24h</span>
+      <span class="hero-badge">🍦 Glaces & granités</span>
+    </div>
+  </div>
+
+  <div class="trust fade-up fade-up-1">
+    <div class="trust-item"><span class="trust-icon">🤝</span><div class="trust-text">Pas de CB<br/>requise</div></div>
+    <div class="trust-item"><span class="trust-icon">📍</span><div class="trust-text">Livraison<br/>possible 44</div></div>
+    <div class="trust-item"><span class="trust-icon">⭐</span><div class="trust-text">Service local<br/>& humain</div></div>
+  </div>
+
+  <div id="form-wrap">
+
+    <!-- FORMULE -->
+    <div class="card fade-up fade-up-2">
+      <p class="card-title"><span class="card-title-num">1</span> Choisissez votre formule</p>
+      <div class="formule-grid">
+        <div class="formule-opt">
+          <input type="radio" name="formule" id="f1" value="Machine seule" onchange="switchFormule('seule')"/>
+          <label for="f1">
+            <span class="formule-name">Machine seule</span>
+            <span class="formule-desc">L'appareil uniquement</span>
+          </label>
+        </div>
+        <div class="formule-opt">
+          <input type="radio" name="formule" id="f2" value="Machine + Pack Service (20 pots + 20 cuillères)" onchange="switchFormule('service')"/>
+          <label for="f2">
+            <span class="formule-name">Pack Service</span>
+            <span class="formule-desc">20 pots + 20 cuillères</span>
+          </label>
+        </div>
+        <div class="formule-opt">
+          <input type="radio" name="formule" id="f3" value="Machine + Pack Gourmand (20 pots + 20 gobelets granita + 40 cuillères)" onchange="switchFormule('gourmand')"/>
+          <label for="f3">
+            <span class="formule-name">Pack Gourmand</span>
+            <span class="formule-desc">20 pots + 20 gobelets + 40 cuillères</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Tarifs Machine seule -->
+      <div class="tarif-section" id="tarifs-seule">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:600;">Durée de location :</p>
+        <div class="tarif-grid">
+          <div class="tarif-opt"><input type="radio" name="duree" id="s1" value="1 jour — 29 € TTC"/><label for="s1"><span class="tarif-dur">1 jour</span><span class="tarif-price">29 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="s2" value="2 jours — 39 € TTC"/><label for="s2"><span class="tarif-dur">2 jours</span><span class="tarif-price">39 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="s3" value="3 jours / week-end — 45 € TTC"/><label for="s3"><span class="tarif-dur">3j / WE</span><span class="tarif-price">45 €</span><span class="tarif-badge">Best value</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="s4" value="1 semaine — 79 € TTC"/><label for="s4"><span class="tarif-dur">1 semaine</span><span class="tarif-price">79 €</span></label></div>
+        </div>
+      </div>
+
+      <!-- Tarifs Pack Service -->
+      <div class="tarif-section" id="tarifs-service">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:600;">Durée de location :</p>
+        <div class="tarif-grid">
+          <div class="tarif-opt"><input type="radio" name="duree" id="p1" value="1 jour — 37 € TTC"/><label for="p1"><span class="tarif-dur">1 jour</span><span class="tarif-price">37 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="p2" value="2 jours — 47 € TTC"/><label for="p2"><span class="tarif-dur">2 jours</span><span class="tarif-price">47 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="p3" value="3 jours / week-end — 53 € TTC"/><label for="p3"><span class="tarif-dur">3j / WE</span><span class="tarif-price">53 €</span><span class="tarif-badge">Best value</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="p4" value="1 semaine — 77 € TTC"/><label for="p4"><span class="tarif-dur">1 semaine</span><span class="tarif-price">77 €</span></label></div>
+        </div>
+      </div>
+
+      <!-- Tarifs Pack Gourmand -->
+      <div class="tarif-section" id="tarifs-gourmand">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:600;">Durée de location :</p>
+        <div class="tarif-grid">
+          <div class="tarif-opt"><input type="radio" name="duree" id="g1" value="1 jour — 43 € TTC"/><label for="g1"><span class="tarif-dur">1 jour</span><span class="tarif-price">43 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="g2" value="2 jours — 53 € TTC"/><label for="g2"><span class="tarif-dur">2 jours</span><span class="tarif-price">53 €</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="g3" value="3 jours / week-end — 59 € TTC"/><label for="g3"><span class="tarif-dur">3j / WE</span><span class="tarif-price">59 €</span><span class="tarif-badge">Best value</span></label></div>
+          <div class="tarif-opt"><input type="radio" name="duree" id="g4" value="1 semaine — 93 € TTC"/><label for="g4"><span class="tarif-dur">1 semaine</span><span class="tarif-price">93 €</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRAISON -->
+    <div class="card fade-up fade-up-3">
+      <p class="card-title"><span class="card-title-num">2</span> Livraison à domicile ?</p>
+      <div class="liv-grid">
+        <div class="liv-opt">
+          <input type="radio" name="livraison" id="liv-oui" value="Oui — tarif selon distance, communiqué par mail avant tout engagement" onchange="updateSummary()"/>
+          <label for="liv-oui"><span class="liv-name">Oui, livrez-moi</span><span class="liv-sub">Tarif communiqué par mail avant engagement</span></label>
+        </div>
+        <div class="liv-opt">
+          <input type="radio" name="livraison" id="liv-non" value="Non — retrait à Séverac (44530)" onchange="updateSummary()"/>
+          <label for="liv-non"><span class="liv-name">Je viens chercher</span><span class="liv-sub">Retrait à Séverac (44530)</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATES -->
+    <div class="card fade-up fade-up-3">
+      <p class="card-title"><span class="card-title-num">3</span> Vos dates souhaitées</p>
+      <div class="dates-grid">
+        <div class="field"><label for="date-debut">Date de début</label><input type="date" id="date-debut"/></div>
+        <div class="field"><label for="date-fin">Date de retour</label><input type="date" id="date-fin"/></div>
+      </div>
+    </div>
+
+    <div class="summary" id="summary">
+      <span class="summary-label" id="summary-label">—</span>
+      <span class="summary-price" id="summary-price">— <span>TTC</span></span>
+    </div>
+
+    <div class="infobox fade-up fade-up-3">
+      🎉 Idéale pour anniversaires, fêtes d'été et soirées. Ajoutez le pack accessoires pour accueillir vos invités dans les meilleures conditions.
+    </div>
+
+    <!-- COORDONNÉES -->
+    <div class="card fade-up fade-up-4">
+      <p class="card-title"><span class="card-title-num">4</span> Vos coordonnées</p>
+      <div class="fields-2">
+        <div class="field"><label for="r-nom">Prénom & nom *</label><input type="text" id="r-nom" placeholder="Jean Dupont" oninput="checkForm()"/></div>
+        <div class="field"><label for="r-tel">Téléphone *</label><input type="tel" id="r-tel" placeholder="06 XX XX XX XX" oninput="checkForm()"/></div>
+      </div>
+      <div class="field" style="margin-top:12px;"><label for="r-email">Email *</label><input type="email" id="r-email" placeholder="jean@exemple.fr" oninput="checkForm()"/></div>
+      <div class="field" style="margin-top:12px;"><label for="r-commune">Commune & code postal *</label><input type="text" id="r-commune" placeholder="Redon — 44460" oninput="checkForm()"/></div>
+    </div>
+
+    <!-- CROSS-SELL -->
+    <div class="card fade-up fade-up-4">
+      <p class="card-title"><span class="card-title-num">5</span> Profitez-en — 10% de remise dès le 2e appareil</p>
+      <div class="cross">
+        <p class="cross-title">Après la fête, pensez au nettoyage 😉</p>
+        <p class="cross-sub">Cochez les appareils qui vous intéressent :</p>
+        <div class="cross-grid">
+          <label class="cross-item"><input type="checkbox" value="Bissell Spotclean Hydrosteam B3700N"/> Bissell Spotclean</label>
+          <label class="cross-item"><input type="checkbox" value="Injecteur Thomson THMSC1500"/> Injecteur Thomson</label>
+          <label class="cross-item"><input type="checkbox" value="Nettoyeur vapeur Kärcher SC1"/> Nettoyeur vapeur</label>
+          <label class="cross-item"><input type="checkbox" value="Nettoyeur haute pression Kärcher K3"/> Haute pression</label>
+          <label class="cross-item"><input type="checkbox" value="Tireuse à bière Beer-UP"/> Tireuse à bière Beer-UP</label>
+          <label class="cross-item"><input type="checkbox" value="Robot lave-vitres Ecovacs Winbot Mini"/> Robot lave-vitres Ecovacs</label>
+          <label class="cross-item"><input type="checkbox" value="Robot lave-vitres Abir WD8"/> Robot lave-vitres Abir</label>
+          <label class="cross-item"><input type="checkbox" value="Aspirateur matelas Kärcher VCH4"/> Aspirateur matelas Kärcher</label>
+          <label class="cross-item"><input type="checkbox" value="Ordinateur HP 17 pouces"/> Ordinateur HP 17"</label>
+          <label class="cross-item"><input type="checkbox" value="Samsung Galaxy S10"/> Samsung Galaxy S10</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGE -->
+    <div class="card fade-up fade-up-5">
+      <p class="card-title"><span class="card-title-num">6</span> Un message ?</p>
+      <div class="field"><label for="r-message">Question ou info complémentaire (optionnel)</label><textarea id="r-message" placeholder="Précisez ici toute information utile à votre réservation…"></textarea></div>
+    </div>
+
+    <div class="fade-up fade-up-5">
+      <button class="cta" id="btn-submit" onclick="envoyerReservation()" disabled>Vérifier la disponibilité sans engagement →</button>
+      <a class="cta-wa" href="https://wa.me/33775719334?text=Bonjour,%20je%20souhaite%20r%C3%A9server%20la%20machine%20%C3%A0%20glace%20KitchenCook%20Deliciosa%20%F0%9F%8D%A6">💬 Réserver par WhatsApp à la place</a>
+      <p class="note">Caution de <strong>299 € non encaissée</strong> — chèque ou espèces à la remise de l'appareil.<br/>Aucun paiement en ligne. Confirmation de disponibilité sous 24h.</p>
+    </div>
+  </div>
+
+  <div class="confirm card" id="confirm-block">
+    <div class="confirm-check">✓</div>
+    <h2>Demande envoyée !</h2>
+    <p>Nous avons bien reçu votre demande pour la <strong>machine à glace KitchenCook Deliciosa</strong>.<br/>Vous recevrez une confirmation de disponibilité sous <strong>24h</strong>.</p>
+    <div class="confirm-recap" id="confirm-recap"></div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Une question urgente ? On est là :</p>
+    <a class="cta-wa" href="https://wa.me/33775719334">💬 Nous contacter sur WhatsApp</a>
+    <a href="tel:0775719334" style="display:block;text-align:center;margin-top:10px;font-size:14px;color:var(--primary);font-weight:600;text-decoration:none;">📞 07 75 71 93 34</a>
+  </div>
+
+</div>
+<script>
+var currentFormule = null;
+
+function switchFormule(type) {
+  document.querySelectorAll('.tarif-section').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('tarifs-' + type).classList.add('active');
+  currentFormule = type;
+  document.querySelectorAll('input[name="duree"]').forEach(function(r){ r.checked = false; });
+  document.getElementById('summary').classList.remove('visible');
+  checkForm();
+}
+
+function updateSummary() {
+  var duree = document.querySelector('input[name="duree"]:checked');
+  var formule = document.querySelector('input[name="formule"]:checked');
+  var liv = document.querySelector('input[name="livraison"]:checked');
+  var s = document.getElementById('summary');
+  if(duree && formule) {
+    var parts = duree.value.split('—');
+    var livTxt = liv ? (liv.value.includes('Oui') ? ' · Livraison 🚚' : ' · Retrait Séverac') : '';
+    document.getElementById('summary-label').textContent = formule.value.split('(')[0].trim() + ' · ' + parts[0].trim() + livTxt;
+    document.getElementById('summary-price').innerHTML = parts[1].trim().replace(' TTC','') + ' <span>TTC</span>';
+    s.classList.add('visible');
+  }
+  checkForm();
+}
+
+document.querySelectorAll('input[name="duree"]').forEach(function(el){ el.addEventListener('change', updateSummary); });
+document.querySelectorAll('input[name="livraison"]').forEach(function(el){ el.addEventListener('change', updateSummary); });
+
+function checkForm() {
+  var formule = document.querySelector('input[name="formule"]:checked');
+  var duree = document.querySelector('input[name="duree"]:checked');
+  var liv = document.querySelector('input[name="livraison"]:checked');
+  var nom = document.getElementById('r-nom').value.trim();
+  var tel = document.getElementById('r-tel').value.trim();
+  var email = document.getElementById('r-email').value.trim();
+  var commune = document.getElementById('r-commune').value.trim();
+  document.getElementById('btn-submit').disabled = !(formule && duree && liv && nom && tel && email && commune);
+}
+
+var today = new Date().toISOString().split('T')[0];
+document.getElementById('date-debut').min = today;
+document.getElementById('date-fin').min = today;
+document.getElementById('date-debut').addEventListener('change', function(){ document.getElementById('date-fin').min = this.value; });
+
+function envoyerReservation() {
+  var formule = document.querySelector('input[name="formule"]:checked').value;
+  var duree = document.querySelector('input[name="duree"]:checked').value;
+  var liv = document.querySelector('input[name="livraison"]:checked').value;
+  var nom = document.getElementById('r-nom').value.trim();
+  var tel = document.getElementById('r-tel').value.trim();
+  var email = document.getElementById('r-email').value.trim();
+  var commune = document.getElementById('r-commune').value.trim();
+  var debut = document.getElementById('date-debut').value || 'Non précisée';
+  var fin = document.getElementById('date-fin').value || 'Non précisée';
+  var message = document.getElementById('r-message').value.trim();
+  var extras = [];
+  document.querySelectorAll('input[type=checkbox]:checked').forEach(function(c){ extras.push(c.value); });
+  var lignes = [
+    '📦 Appareil : Machine à glace KitchenCook Deliciosa',
+    '🍦 Formule : ' + formule,
+    '⏱ Durée : ' + duree,
+    '🚚 Livraison : ' + liv,
+    '📅 Début : ' + debut,
+    '📅 Retour : ' + fin,
+    '👤 Nom : ' + nom,
+    '📞 Téléphone : ' + tel,
+    '✉️ Email : ' + email,
+    '📍 Commune : ' + commune,
+    extras.length > 0 ? '➕ Appareils supplémentaires : ' + extras.join(', ') : '',
+    message ? '💬 Message : ' + message : ''
+  ].filter(Boolean);
+  var subject = encodeURIComponent('Réservation Machine à glace — ' + nom);
+  var body = encodeURIComponent(lignes.join('\n'));
+  window.location.href = 'mailto:location@mesptitsservices.fr?subject=' + subject + '&body=' + body;
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('confirm-recap').innerHTML = lignes.map(function(l){ return '<p>' + l + '</p>'; }).join('');
+  document.getElementById('confirm-block').classList.add('visible');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
